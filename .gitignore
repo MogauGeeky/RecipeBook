@@ -7,3 +7,7 @@
 /.vs/config
 /src/RecipeBook.API/obj
 /src/RecipeBook.Angular/ClientApp/null
+obj
+**/**/obj
+bin
+**/**/bin
