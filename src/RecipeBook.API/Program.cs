@@ -15,6 +15,9 @@ namespace RecipeBook.API
                 .UseStartup<Startup>()
                 .Build();
 
+            // Migrate the database
+            host.MigrateCosmosDb();
+
             host.Run();
         }
     }
