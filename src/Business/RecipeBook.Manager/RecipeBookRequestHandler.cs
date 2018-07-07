@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace RecipeBook.Manager
 {
-    public class RecipeBookRequestHandler : IRequestHandler<AddRecipe, RecipeEntry>
+    public class RecipeBookRequestHandler :
+        IRequestHandler<AddRecipe, RecipeEntry>,
+        IRequestHandler<UpdateRecipe, RecipeEntry>
     {
         private readonly IRecipeBookDataManager _recipeBookDataManager;
         private readonly ILogger<RecipeBookRequestHandler> _logger;
@@ -31,6 +33,14 @@ namespace RecipeBook.Manager
             var recipeEntry = _mapper.Map<RecipeEntry>(request);
 
             return (RecipeEntry)await _recipeBookDataManager.Recipes.CreateItemAsync(recipeEntry);
+        }
+
+        public async Task<RecipeEntry> Handle(UpdateRecipe request, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Updating recipe", request);
+            var recipeEntry = _mapper.Map<RecipeEntry>(request);
+
+            return (RecipeEntry)await _recipeBookDataManager.Recipes.UpdateItemAsync(recipeEntry.Id, recipeEntry);
         }
     }
 }
