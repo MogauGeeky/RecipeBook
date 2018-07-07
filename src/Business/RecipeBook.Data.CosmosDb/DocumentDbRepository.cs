@@ -12,15 +12,13 @@ namespace RecipeBook.Data.CosmosDb
     public class DocumentDbRepository<T> : IRepository<T> where T : class
     {
         private readonly string _databaseId;
+        private readonly DocumentClient _client;
         private readonly string _collectionId = nameof(T).ToUpper();
 
-        private DocumentClient _client;
-
-        public DocumentDbRepository(DocumentDbOptions documentDbOptions)
+        public DocumentDbRepository(DocumentClient client, string databaseId)
         {
-            _databaseId = documentDbOptions.DatabaseId;
-
-            _client = new DocumentClient(new Uri(documentDbOptions.Endpoint), documentDbOptions.Key, new ConnectionPolicy { EnableEndpointDiscovery = false });
+            _client = client ?? throw new ArgumentNullException(nameof(client));
+            _databaseId = databaseId ?? throw new ArgumentNullException(nameof(databaseId));
         }
 
         public async Task<object> CreateItemAsync(T item)
