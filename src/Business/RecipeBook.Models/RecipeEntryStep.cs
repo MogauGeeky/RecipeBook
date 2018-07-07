@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RecipeBook.Models
+﻿namespace RecipeBook.Models
 {
     public class RecipeEntryStep
     {
