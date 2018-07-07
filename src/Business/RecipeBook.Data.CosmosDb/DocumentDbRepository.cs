@@ -13,12 +13,13 @@ namespace RecipeBook.Data.CosmosDb
     {
         private readonly string _databaseId;
         private readonly DocumentClient _client;
-        private readonly string _collectionId = nameof(T).ToUpper();
+        private readonly string _collectionId;
 
         public DocumentDbRepository(DocumentClient client, string databaseId)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _databaseId = databaseId ?? throw new ArgumentNullException(nameof(databaseId));
+            _collectionId = typeof(T).FullName;
         }
 
         public async Task<object> CreateItemAsync(T item)

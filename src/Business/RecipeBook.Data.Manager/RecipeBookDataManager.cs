@@ -56,9 +56,11 @@ namespace RecipeBook.Data.Manager
 
         private static async Task CreateCollectionIfNotExistsAsync<T>(DocumentClient client, string databaseId)
         {
+            var collectionId = typeof(T).FullName;
+
             try
             {
-                await client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(databaseId, nameof(T).ToUpper()));
+                await client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(databaseId, collectionId));
             }
             catch (DocumentClientException e)
             {
@@ -66,7 +68,7 @@ namespace RecipeBook.Data.Manager
                 {
                     await client.CreateDocumentCollectionAsync(
                         UriFactory.CreateDatabaseUri(databaseId),
-                        new DocumentCollection { Id = nameof(T).ToUpper() },
+                        new DocumentCollection { Id = collectionId },
                         new RequestOptions { OfferThroughput = 1000 });
                 }
                 else
