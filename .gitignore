@@ -6,3 +6,4 @@
 /obj/Docker
 /.vs/config
 /src/RecipeBook.API/obj
+/src/RecipeBook.Angular/ClientApp/null
