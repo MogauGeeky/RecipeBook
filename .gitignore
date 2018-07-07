@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs/RecipeBook/v15
+/obj/Docker
+/.vs/config
+/src/RecipeBook.API/obj

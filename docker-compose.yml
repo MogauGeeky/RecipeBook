@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  recipebook.api:
+    image: ${DOCKER_REGISTRY}recipebookapi
+    build:
+      context: .
+      dockerfile: src\RecipeBook.API\Dockerfile
