@@ -28,6 +28,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Data", "src\Busi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Data.CosmosDb", "src\Business\RecipeBook.Data.CosmosDb\RecipeBook.Data.CosmosDb.csproj", "{31C89111-E0C9-44F0-9C6F-0D91377331BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Manager", "src\Business\RecipeBook.Manager\RecipeBook.Manager.csproj", "{4071EA7D-93A0-40BB-A6D7-F92FA7C19ACB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipeBook.Data.Manager", "src\Business\RecipeBook.Data.Manager\RecipeBook.Data.Manager.csproj", "{1BC29990-086C-4508-A8AD-0211FDF1EB44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +62,14 @@ Global
 		{31C89111-E0C9-44F0-9C6F-0D91377331BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31C89111-E0C9-44F0-9C6F-0D91377331BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31C89111-E0C9-44F0-9C6F-0D91377331BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4071EA7D-93A0-40BB-A6D7-F92FA7C19ACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4071EA7D-93A0-40BB-A6D7-F92FA7C19ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4071EA7D-93A0-40BB-A6D7-F92FA7C19ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4071EA7D-93A0-40BB-A6D7-F92FA7C19ACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BC29990-086C-4508-A8AD-0211FDF1EB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BC29990-086C-4508-A8AD-0211FDF1EB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BC29990-086C-4508-A8AD-0211FDF1EB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BC29990-086C-4508-A8AD-0211FDF1EB44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +81,8 @@ Global
 		{5983A03C-9CE5-4B0A-8696-09E4C76AE4A5} = {87F112CC-8C24-4EB3-9160-C56CF79B2F39}
 		{917E791B-FF62-4EA5-B758-5E6C3DFFBC51} = {87F112CC-8C24-4EB3-9160-C56CF79B2F39}
 		{31C89111-E0C9-44F0-9C6F-0D91377331BF} = {87F112CC-8C24-4EB3-9160-C56CF79B2F39}
+		{4071EA7D-93A0-40BB-A6D7-F92FA7C19ACB} = {87F112CC-8C24-4EB3-9160-C56CF79B2F39}
+		{1BC29990-086C-4508-A8AD-0211FDF1EB44} = {87F112CC-8C24-4EB3-9160-C56CF79B2F39}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55ED4823-A44E-4DE0-BA92-86F2FBABA83F}
