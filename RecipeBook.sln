@@ -20,6 +20,10 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Angular", "src\RecipeBook.Angular\RecipeBook.Angular.csproj", "{2354CB61-0EDE-4A28-8816-D8687A5ADFD5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{87F112CC-8C24-4EB3-9160-C56CF79B2F39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Models", "src\Business\RecipeBook.Models\RecipeBook.Models.csproj", "{5983A03C-9CE5-4B0A-8696-09E4C76AE4A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +42,10 @@ Global
 		{2354CB61-0EDE-4A28-8816-D8687A5ADFD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2354CB61-0EDE-4A28-8816-D8687A5ADFD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2354CB61-0EDE-4A28-8816-D8687A5ADFD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5983A03C-9CE5-4B0A-8696-09E4C76AE4A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5983A03C-9CE5-4B0A-8696-09E4C76AE4A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5983A03C-9CE5-4B0A-8696-09E4C76AE4A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5983A03C-9CE5-4B0A-8696-09E4C76AE4A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,6 +53,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DE3202BF-1A5E-41BD-BF7C-A921355B02B5} = {4D878B9F-9EDF-41B2-BCFB-42B0AF6CFC80}
 		{2354CB61-0EDE-4A28-8816-D8687A5ADFD5} = {4D878B9F-9EDF-41B2-BCFB-42B0AF6CFC80}
+		{87F112CC-8C24-4EB3-9160-C56CF79B2F39} = {4D878B9F-9EDF-41B2-BCFB-42B0AF6CFC80}
+		{5983A03C-9CE5-4B0A-8696-09E4C76AE4A5} = {87F112CC-8C24-4EB3-9160-C56CF79B2F39}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55ED4823-A44E-4DE0-BA92-86F2FBABA83F}
