@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using RecipeBook.Data.Manager;
 using RecipeBook.Manager.Requests;
 using RecipeBook.Models;
 using System.Collections.Generic;
@@ -13,20 +12,16 @@ namespace RecipeBook.API.Controllers
     public class RecipeController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IRecipeBookDataManager _recipeBookDataManager;
 
-        public RecipeController(IMediator mediator, IRecipeBookDataManager recipeBookDataManager)
+        public RecipeController(IMediator mediator)
         {
-            _recipeBookDataManager = recipeBookDataManager;
             _mediator = mediator;
         }
-
 
         // GET: api/Recipe
         [HttpGet]
         public async Task<IEnumerable<RecipeEntry>> Get()
         {
-            //return await _recipeBookDataManager.Recipes.GetItemsAsync(c => c.Id != null);
             return await _mediator.Send(new GetRecipes());
         }
 
@@ -46,7 +41,7 @@ namespace RecipeBook.API.Controllers
 
         // PUT: api/Recipe/5
         [HttpPut("{id}")]
-        public async Task<RecipeEntry> Put(int id, [FromBody] UpdateRecipe value)
+        public async Task<RecipeEntry> Put(string id, [FromBody] UpdateRecipe value)
         {
             return await _mediator.Send(value);
         }
