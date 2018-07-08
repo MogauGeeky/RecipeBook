@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RecipeBook.Manager.Requests;
 using RecipeBook.Models;
+using System;
 
 namespace RecipeBook.Manager
 {
@@ -14,6 +15,9 @@ namespace RecipeBook.Manager
 
             CreateMap<UpdateRecipe, RecipeEntry>()
                 .ForMember(c => c.RecipeEntrySteps, x => x.Ignore());
+
+            CreateMap<AddRecipeStep, RecipeEntryStep>()
+                .ForMember(c => c.Id, x => x.MapFrom(c => Guid.NewGuid().ToString()));
         }
     }
 }

@@ -13,8 +13,10 @@ namespace RecipeBook.Manager
     public class RecipeBookRequestHandler :
         IRequestHandler<AddRecipe, RecipeEntry>,
         IRequestHandler<UpdateRecipe, RecipeEntry>,
+        IRequestHandler<DeleteRecipe>,
         IRequestHandler<GetRecipes, IEnumerable<RecipeEntry>>,
-        IRequestHandler<GetRecipe, RecipeEntry>
+        IRequestHandler<GetRecipe, RecipeEntry>,
+        IRequestHandler<AddRecipeStep, RecipeEntryStep>
     {
         private readonly IRecipeBookDataManager _recipeBookDataManager;
         private readonly ILogger<RecipeBookRequestHandler> _logger;
@@ -63,6 +65,31 @@ namespace RecipeBook.Manager
             _logger.LogInformation("Retrieving recipe", request);
 
             return await _recipeBookDataManager.Recipes.GetItemAsync(request.Id);
+        }
+
+        public async Task<RecipeEntryStep> Handle(AddRecipeStep request, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Adding a new step for recipe", request);
+
+            var recipe = await _recipeBookDataManager.Recipes.GetItemAsync(request.RecipeStepId);
+
+            if (recipe.RecipeEntrySteps == null)
+                recipe.RecipeEntrySteps = new List<RecipeEntryStep>();
+
+            var recipeStep = _mapper.Map<RecipeEntryStep>(request);
+            recipe.RecipeEntrySteps.Add(recipeStep);
+
+            await _recipeBookDataManager.Recipes.UpdateItemAsync(recipe.Id, recipe);
+
+            return recipeStep;
+        }
+
+        public async Task<Unit> Handle(DeleteRecipe request, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Deleting recipe", request);
+            await _recipeBookDataManager.Recipes.DeleteItemAsync(request.Id);
+
+            return new Unit();
         }
     }
 }

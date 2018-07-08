@@ -48,8 +48,17 @@ namespace RecipeBook.API.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(string id)
         {
+            await _mediator.Send(new DeleteRecipe(id));
+        }
+
+        [HttpPost("{id}/steps")]
+        public async Task<RecipeEntryStep> RecipeEntryStepAsync(string id, [FromBody]AddRecipeStep value)
+        {
+            value.RecipeStepId = id;
+
+            return await _mediator.Send(value);
         }
     }
 }

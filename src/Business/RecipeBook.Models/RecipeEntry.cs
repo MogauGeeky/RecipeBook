@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace RecipeBook.Models
 {
@@ -9,6 +10,6 @@ namespace RecipeBook.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string Notes { get; set; }
-        public RecipeEntryStep[] RecipeEntrySteps { get; set; }
+        public List<RecipeEntryStep> RecipeEntrySteps { get; set; }
     }
 }
