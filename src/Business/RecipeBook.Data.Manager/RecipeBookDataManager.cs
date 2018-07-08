@@ -33,7 +33,6 @@ namespace RecipeBook.Data.Manager
 
             // create database collections
             CreateCollectionIfNotExistsAsync<RecipeEntry>(client, documentDbOptions.DatabaseId).Wait();
-            CreateCollectionIfNotExistsAsync<RecipeEntryStep>(client, documentDbOptions.DatabaseId).Wait();
         }
 
         private static async Task CreateDatabaseIfNotExistsAsync(DocumentClient client, string databaseId)
