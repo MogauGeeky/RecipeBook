@@ -54,11 +54,26 @@ namespace RecipeBook.API.Controllers
         }
 
         [HttpPost("{id}/steps")]
-        public async Task<RecipeEntryStep> RecipeEntryStepAsync(string id, [FromBody]AddRecipeStep value)
+        public async Task<RecipeEntryStep> AddStep(string id, [FromBody]AddRecipeStep value)
         {
-            value.RecipeStepId = id;
+            value.RecipeId = id;
 
             return await _mediator.Send(value);
+        }
+
+        [HttpPut("{id}/steps/{stepId}")]
+        public async Task<RecipeEntryStep> UpdateStep(string id, string stepId, [FromBody]UpdateRecipeStep value)
+        {
+            value.Id = stepId;
+            value.RecipeId = id;
+
+            return await _mediator.Send(value);
+        }
+
+        [HttpDelete("{id}/steps/{stepId}")]
+        public async Task DeleteStep(string id, string stepId)
+        {
+            await _mediator.Send(new DeleteRecipeStep(stepId, id));
         }
     }
 }

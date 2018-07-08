@@ -5,6 +5,7 @@ using RecipeBook.Data.Manager;
 using RecipeBook.Manager.Requests;
 using RecipeBook.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +17,9 @@ namespace RecipeBook.Manager
         IRequestHandler<DeleteRecipe>,
         IRequestHandler<GetRecipes, IEnumerable<RecipeEntry>>,
         IRequestHandler<GetRecipe, RecipeEntry>,
-        IRequestHandler<AddRecipeStep, RecipeEntryStep>
+        IRequestHandler<AddRecipeStep, RecipeEntryStep>,
+        IRequestHandler<UpdateRecipeStep, RecipeEntryStep>,
+        IRequestHandler<DeleteRecipeStep>
     {
         private readonly IRecipeBookDataManager _recipeBookDataManager;
         private readonly ILogger<RecipeBookRequestHandler> _logger;
@@ -67,11 +70,19 @@ namespace RecipeBook.Manager
             return await _recipeBookDataManager.Recipes.GetItemAsync(request.Id);
         }
 
+        public async Task<Unit> Handle(DeleteRecipe request, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Deleting recipe", request);
+            await _recipeBookDataManager.Recipes.DeleteItemAsync(request.Id);
+
+            return new Unit();
+        }
+
         public async Task<RecipeEntryStep> Handle(AddRecipeStep request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Adding a new step for recipe", request);
 
-            var recipe = await _recipeBookDataManager.Recipes.GetItemAsync(request.RecipeStepId);
+            var recipe = await _recipeBookDataManager.Recipes.GetItemAsync(request.RecipeId);
 
             if (recipe.RecipeEntrySteps == null)
                 recipe.RecipeEntrySteps = new List<RecipeEntryStep>();
@@ -84,10 +95,31 @@ namespace RecipeBook.Manager
             return recipeStep;
         }
 
-        public async Task<Unit> Handle(DeleteRecipe request, CancellationToken cancellationToken)
+        public async Task<RecipeEntryStep> Handle(UpdateRecipeStep request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Deleting recipe", request);
-            await _recipeBookDataManager.Recipes.DeleteItemAsync(request.Id);
+            _logger.LogInformation("Updating a step for recipe", request);
+
+            var recipe = await _recipeBookDataManager.Recipes.GetItemAsync(request.RecipeId);
+
+            var update = _mapper.Map<RecipeEntryStep>(request);
+
+            var record = recipe.RecipeEntrySteps.FindIndex(c => c.Id == request.Id);
+            recipe.RecipeEntrySteps[record] = update;
+
+            await _recipeBookDataManager.Recipes.UpdateItemAsync(recipe.Id, recipe);
+
+            return update;
+        }
+
+        public async Task<Unit> Handle(DeleteRecipeStep request, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Deleting a step for recipe", request);
+
+            var recipe = await _recipeBookDataManager.Recipes.GetItemAsync(request.RecipeId);
+
+            recipe.RecipeEntrySteps = recipe.RecipeEntrySteps.Where(c => c.Id != request.Id).ToList();
+
+            await _recipeBookDataManager.Recipes.UpdateItemAsync(recipe.Id, recipe);
 
             return new Unit();
         }
