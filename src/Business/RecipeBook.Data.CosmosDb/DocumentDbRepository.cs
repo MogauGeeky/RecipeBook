@@ -22,9 +22,11 @@ namespace RecipeBook.Data.CosmosDb
             _collectionId = typeof(T).FullName;
         }
 
-        public async Task<object> CreateItemAsync(T item)
+        public async Task<string> CreateItemAsync(T item)
         {
-            return await _client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseId, _collectionId), item);
+            var document = await _client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseId, _collectionId), item);
+
+            return document.Resource.Id;
         }
 
         public async Task DeleteItemAsync(string id)
@@ -69,9 +71,9 @@ namespace RecipeBook.Data.CosmosDb
             return results;
         }
 
-        public async Task<object> UpdateItemAsync(string id, T item)
+        public async Task UpdateItemAsync(string id, T item)
         {
-            return await _client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(_databaseId, _collectionId, id), item);
+            await _client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(_databaseId, _collectionId, id), item);
         }
     }
 }

@@ -35,7 +35,10 @@ namespace RecipeBook.Manager
             _logger.LogInformation("Adding a new recipe", request);
             var recipeEntry = _mapper.Map<RecipeEntry>(request);
 
-            return (RecipeEntry)await _recipeBookDataManager.Recipes.CreateItemAsync(recipeEntry);
+            var newEntryId = await _recipeBookDataManager.Recipes.CreateItemAsync(recipeEntry);
+            recipeEntry.Id = newEntryId;
+
+            return recipeEntry;
         }
 
         public async Task<RecipeEntry> Handle(UpdateRecipe request, CancellationToken cancellationToken)
@@ -43,7 +46,9 @@ namespace RecipeBook.Manager
             _logger.LogInformation("Updating recipe", request);
             var recipeEntry = _mapper.Map<RecipeEntry>(request);
 
-            return (RecipeEntry)await _recipeBookDataManager.Recipes.UpdateItemAsync(recipeEntry.Id, recipeEntry);
+            await _recipeBookDataManager.Recipes.UpdateItemAsync(recipeEntry.Id, recipeEntry);
+
+            return recipeEntry;
         }
 
         public async Task<IEnumerable<RecipeEntry>> Handle(GetRecipes request, CancellationToken cancellationToken)

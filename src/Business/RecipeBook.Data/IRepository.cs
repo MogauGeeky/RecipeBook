@@ -11,9 +11,9 @@ namespace RecipeBook.Data
 
         Task<IEnumerable<T>> GetItemsAsync(Expression<Func<T, bool>> predicate);
 
-        Task<object> CreateItemAsync(T item);
+        Task<string> CreateItemAsync(T item);
 
-        Task<object> UpdateItemAsync(string id, T item);
+        Task UpdateItemAsync(string id, T item);
 
         Task DeleteItemAsync(string id);
     }
