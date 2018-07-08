@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RecipeBook.Data.CosmosDb;
 using RecipeBook.Data.Manager;
-using System.Collections.Generic;
+using RecipeBook.Manager;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 
@@ -35,14 +36,20 @@ namespace RecipeBook.API
 
             services.Configure<DocumentDbOptions>(Configuration.GetSection("DocumentDbOptions"));
 
-            services.AddAutoMapper(new List<Assembly> { typeof(Startup).Assembly });
-
-            services.AddMediatR(new List<Assembly> { typeof(Startup).Assembly });
-
             services.AddTransient<IRecipeBookDataManager, RecipeBookDataManager>();
 
+            services.AddAutoMapper(typeof(RecipeBookRequestHandler).GetTypeInfo().Assembly);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMediatR(typeof(RecipeBookRequestHandler).GetTypeInfo().Assembly);
+
+            services.AddMvc()
+                .AddFluentValidation(fv =>
+                {
+                    fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+
+                    fv.RegisterValidatorsFromAssembly(typeof(RecipeBookRequestHandler).GetTypeInfo().Assembly);
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
