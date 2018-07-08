@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
+using Microsoft.Extensions.Options;
 using RecipeBook.Data.CosmosDb;
 using RecipeBook.Models;
 
@@ -12,10 +13,10 @@ namespace RecipeBook.Data.Manager
         private readonly DocumentClient _documentClient;
         private readonly DocumentDbOptions _documentDbOptions;
 
-        public RecipeBookDataManager(DocumentDbOptions documentDbOptions)
+        public RecipeBookDataManager(IOptions<DocumentDbOptions> documentDbOptions)
         {
-            _documentDbOptions = documentDbOptions ?? throw new ArgumentNullException(nameof(documentDbOptions));
-            _documentClient = new DocumentClient(new Uri(documentDbOptions.Endpoint), documentDbOptions.Key, new ConnectionPolicy { EnableEndpointDiscovery = false });
+            _documentDbOptions = documentDbOptions.Value ?? throw new ArgumentNullException(nameof(documentDbOptions));
+            _documentClient = new DocumentClient(new Uri(_documentDbOptions.Endpoint), _documentDbOptions.Key, new ConnectionPolicy { EnableEndpointDiscovery = false });
         }
 
         public IRepository<RecipeEntry> Recipes => new DocumentDbRepository<RecipeEntry>(_documentClient, _documentDbOptions.DatabaseId);
