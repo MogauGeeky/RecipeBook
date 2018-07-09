@@ -69,6 +69,7 @@ namespace RecipeBook.API
                     fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
 
                     fv.RegisterValidatorsFromAssembly(typeof(RecipeBookRequestHandler).GetTypeInfo().Assembly);
+                    fv.RegisterValidatorsFromAssembly(typeof(Startup).GetTypeInfo().Assembly);
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
