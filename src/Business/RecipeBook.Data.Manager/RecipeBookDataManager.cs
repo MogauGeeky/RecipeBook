@@ -19,9 +19,9 @@ namespace RecipeBook.Data.Manager
             _documentClient = new DocumentClient(new Uri(_documentDbOptions.Endpoint), _documentDbOptions.Key, new ConnectionPolicy { EnableEndpointDiscovery = false });
         }
 
-        public IRepository<RecipeEntry> Recipes => new DocumentDbRepository<RecipeEntry>(_documentClient, _documentDbOptions.DatabaseId);
+        public IRepository<RecipeUser> Users => new DocumentDbRepository<RecipeUser>(_documentClient, _documentDbOptions.DatabaseId);
 
-        public IRepository<RecipeEntryStep> RecipeSteps => new DocumentDbRepository<RecipeEntryStep>(_documentClient, _documentDbOptions.DatabaseId);
+        public IRepository<RecipeEntry> Recipes => new DocumentDbRepository<RecipeEntry>(_documentClient, _documentDbOptions.DatabaseId);
 
         public static void Initialize(DocumentDbOptions documentDbOptions)
         {
@@ -32,6 +32,7 @@ namespace RecipeBook.Data.Manager
             CreateDatabaseIfNotExistsAsync(client, documentDbOptions.DatabaseId).Wait();
 
             // create database collections
+            CreateCollectionIfNotExistsAsync<RecipeUser>(client, documentDbOptions.DatabaseId).Wait();
             CreateCollectionIfNotExistsAsync<RecipeEntry>(client, documentDbOptions.DatabaseId).Wait();
         }
 

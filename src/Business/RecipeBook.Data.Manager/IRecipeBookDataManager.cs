@@ -5,6 +5,6 @@ namespace RecipeBook.Data.Manager
     public interface IRecipeBookDataManager
     {
         IRepository<RecipeEntry> Recipes { get; }
-        IRepository<RecipeEntryStep> RecipeSteps { get; }
+        IRepository<RecipeUser> Users { get; }
     }
 }
