@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using RecipeBook.API.Middlewares;
 using RecipeBook.API.Models;
 using RecipeBook.Data.CosmosDb;
 using RecipeBook.Data.Manager;
@@ -42,6 +43,8 @@ namespace RecipeBook.API
             services.Configure<SignCredentials>(Configuration.GetSection("SignCredentials"));
 
             services.AddTransient<IRecipeBookDataManager, RecipeBookDataManager>();
+            services.AddSingleton<ICurrentUserContext, CurrentUserProvider>();
+            services.AddSingleton<ICurrentUser, CurrentUserProvider>();
 
             services.AddAutoMapper(typeof(RecipeBookRequestHandler).GetTypeInfo().Assembly);
 
@@ -90,6 +93,7 @@ namespace RecipeBook.API
             }
 
             app.UseAuthentication();
+            app.UseMiddleware<CurrentUserMiddleware>();
             app.UseHttpsRedirection();            
             app.UseMvc();
         }
