@@ -5,6 +5,7 @@ using RecipeBook.Data.Manager;
 using RecipeBook.Manager;
 using RecipeBook.Manager.Requests;
 using RecipeBook.Models;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -37,11 +38,7 @@ namespace XUnitTests.Business.RecipeBook.Manager.Tests
                 Title = "test"
             };
 
-            autoMoqer.GetMock<IRecipeBookDataManager>().Setup(c => c.Recipes.CreateItemAsync(It.IsAny<RecipeEntry>())).Returns(Task.FromResult((object)new RecipeEntry
-            {
-                Id = "1",
-                Title = "test"
-            }));
+            autoMoqer.GetMock<IRecipeBookDataManager>().Setup(c => c.Recipes.CreateItemAsync(It.IsAny<RecipeEntry>())).Returns(Task.FromResult(Guid.NewGuid().ToString()));
 
             // Act
             var response = recipeBookRequestHandler.Handle(addNew, cancellationToken).Result;
@@ -64,11 +61,7 @@ namespace XUnitTests.Business.RecipeBook.Manager.Tests
                 Title = "test"
             };
 
-            autoMoqer.GetMock<IRecipeBookDataManager>().Setup(c => c.Recipes.UpdateItemAsync(It.IsAny<string>(), It.IsAny<RecipeEntry>())).Returns(Task.FromResult((object)new RecipeEntry
-            {
-                Id = "1",
-                Title = "test"
-            }));
+            autoMoqer.GetMock<IRecipeBookDataManager>().Setup(c => c.Recipes.UpdateItemAsync(It.IsAny<string>(), It.IsAny<RecipeEntry>())).Returns(Task.CompletedTask);
 
             // Act
             var response = recipeBookRequestHandler.Handle(updateRecipe, cancellationToken).Result;

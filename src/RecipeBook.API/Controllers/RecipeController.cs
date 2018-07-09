@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecipeBook.Manager.Requests;
 using RecipeBook.Models;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace RecipeBook.API.Controllers
 {
+    [Authorize]
     [Route("api/recipes")]
     [ApiController]
     public class RecipeController : ControllerBase

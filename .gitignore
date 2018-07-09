@@ -11,3 +11,5 @@ obj
 **/**/obj
 bin
 **/**/bin
+/.vs/RecipeBook/DesignTimeBuild
+*.csproj.user
