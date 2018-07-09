@@ -45,13 +45,13 @@ namespace RecipeBook.API.Controllers
             
             if(user == null)
             {
-                return BadRequest("Could not verify username and password");
+                return BadRequest("Invalid username and password");
             }
 
             // verify user password
             if(!IsPasswordValid(user, signIn.Password))
             {
-                return BadRequest("Could not verify username and password");
+                return BadRequest("Invalid username and password");
             }
 
             // if all is well, generate a token
