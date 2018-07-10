@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using RecipeBook.Data.Manager;
+using RecipeBook.Manager.Exceptions;
 using RecipeBook.Manager.Requests;
 using RecipeBook.Models;
 using System.Collections.Generic;
@@ -55,8 +56,11 @@ namespace RecipeBook.Manager
             _logger.LogInformation("Updating recipe", request);
             var recipeEntry = _mapper.Map<RecipeEntry>(request);
 
+            if (!(await _recipeBookDataManager.Recipes.GetItemsAsync(c => c.Id == request.Id)).Any())
+                throw new MissingRecordException($"Recipe with id: {request.Id} not found");
+
             if (recipeEntry.OwnerId != _currentUser.UserId)
-                throw new System.Exception("Cannot update recipe you don't own");
+                throw new RestrictedUpdateException("Cannot update recipe you don't own");
 
             await _recipeBookDataManager.Recipes.UpdateItemAsync(recipeEntry.Id, recipeEntry);
 
@@ -80,6 +84,15 @@ namespace RecipeBook.Manager
         public async Task<Unit> Handle(DeleteRecipe request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Deleting recipe", request);
+
+            var recipe = (await _recipeBookDataManager.Recipes.GetItemsAsync(c => c.Id == request.Id)).FirstOrDefault();
+
+            if (recipe == null)
+                throw new MissingRecordException($"Recipe with id: {request.Id} not found");
+
+            if (recipe.OwnerId != _currentUser.UserId)
+                throw new RestrictedUpdateException("Cannot delete a recipe you don't own");
+
             await _recipeBookDataManager.Recipes.DeleteItemAsync(request.Id);
 
             return new Unit();
@@ -90,9 +103,11 @@ namespace RecipeBook.Manager
             _logger.LogInformation("Adding a new step for recipe", request);
 
             var recipe = await _recipeBookDataManager.Recipes.GetItemAsync(request.RecipeId);
+            if (recipe == null)
+                throw new MissingRecordException($"Recipe with id: {request.RecipeId} not found");
 
             if (recipe.OwnerId != _currentUser.UserId)
-                throw new System.Exception("Cannot update recipe you don't own");
+                throw new RestrictedUpdateException("Cannot update a recipe you don't own");
 
             if (recipe.RecipeEntrySteps == null)
                 recipe.RecipeEntrySteps = new List<RecipeEntryStep>();
@@ -110,9 +125,11 @@ namespace RecipeBook.Manager
             _logger.LogInformation("Updating a step for recipe", request);
 
             var recipe = await _recipeBookDataManager.Recipes.GetItemAsync(request.RecipeId);
+            if (recipe == null)
+                throw new MissingRecordException($"Recipe with id: {request.RecipeId} not found");
 
             if (recipe.OwnerId != _currentUser.UserId)
-                throw new System.Exception("Cannot update recipe you don't own");
+                throw new RestrictedUpdateException("Cannot update a recipe you don't own");
 
             var update = _mapper.Map<RecipeEntryStep>(request);
 
@@ -129,9 +146,11 @@ namespace RecipeBook.Manager
             _logger.LogInformation("Deleting a step for recipe", request);
 
             var recipe = await _recipeBookDataManager.Recipes.GetItemAsync(request.RecipeId);
+            if (recipe == null)
+                throw new MissingRecordException($"Recipe with id: {request.RecipeId} not found");
 
             if (recipe.OwnerId != _currentUser.UserId)
-                throw new System.Exception("Cannot delete recipe you don't own");
+                throw new RestrictedUpdateException("Cannot update a recipe you don't own");
 
             recipe.RecipeEntrySteps = recipe.RecipeEntrySteps.Where(c => c.Id != request.Id).ToList();
 

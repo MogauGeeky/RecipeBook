@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using RecipeBook.API.Extensions;
 using RecipeBook.API.Middlewares;
 using RecipeBook.API.Models;
 using RecipeBook.Data.CosmosDb;
@@ -82,6 +83,8 @@ namespace RecipeBook.API
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseGlobalExceptionHandler();
 
             if (env.IsDevelopment())
             {
