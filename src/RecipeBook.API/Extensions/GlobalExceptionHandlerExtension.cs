@@ -3,10 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using RecipeBook.Manager.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RecipeBook.API.Extensions
 {
@@ -14,7 +10,7 @@ namespace RecipeBook.API.Extensions
     {
         public static IApplicationBuilder UseGlobalExceptionHandler(this IApplicationBuilder app)
         {
-            app.UseExceptionHandler().WithConventions(x =>
+            app.UseExceptionHandler("/error").WithConventions(x =>
             {
                 x.ContentType = "application/json";
                 x.MessageFormatter(s => JsonConvert.SerializeObject(new

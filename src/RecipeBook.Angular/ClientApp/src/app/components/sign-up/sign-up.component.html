@@ -1,0 +1,67 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-3 align-self-center">
+      <form style="margin-top: 100px;" [formGroup]="signUpForm">
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input type="text" [class]="(signUpForm.get('fullname').dirty && signUpForm.get('fullname').errors) ? 'form-control is-invalid': 'form-control'"
+            id="fullname" placeholder="Fullname" formControlName="fullname">
+          <div class="invalid-feedback">
+            <ng-container *ngIf="signUpForm.get('fullname').hasError('required')">
+              Please enter your name
+            </ng-container>
+            <ng-container *ngIf="signUpForm.get('fullname').hasError('maxlength')">
+              Name cannot be longer than 100 characters
+            </ng-container>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" [class]="(signUpForm.get('username').dirty && signUpForm.get('username').errors) ? 'form-control is-invalid': 'form-control'"
+            id="username" placeholder="Username" formControlName="username">
+          <div class="invalid-feedback">
+            <ng-container *ngIf="signUpForm.get('username').hasError('required')">
+              Please enter your username
+            </ng-container>
+            <ng-container *ngIf="signUpForm.get('username').hasError('maxlength')">
+              Username cannot be longer than 60 characters
+            </ng-container>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" [class]="(signUpForm.get('password').dirty && signUpForm.get('password').errors) ? 'form-control is-invalid': 'form-control'"
+            id="password" placeholder="Password" formControlName="password">
+          <div class="invalid-feedback">
+            <ng-container *ngIf="signUpForm.get('password').hasError('required')">
+              Please enter your password
+            </ng-container>
+            <ng-container *ngIf="signUpForm.get('password').hasError('minlength')">
+              Password must be 8 characters or more
+            </ng-container>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" [class]="(signUpForm.get('confirmPassword').dirty && signUpForm.get('confirmPassword').errors) ? 'form-control is-invalid': 'form-control'"
+            id="confirmPassword" placeholder="Password" formControlName="confirmPassword">
+          <div class="invalid-feedback">
+            <ng-container *ngIf="signUpForm.get('confirmPassword').hasError('required')">
+              Please confirm your password
+            </ng-container>
+            <ng-container *ngIf="signUpForm.get('confirmPassword').hasError('confirm')">
+              Passwords don't match
+            </ng-container>
+          </div>
+        </div>
+        <button [disabled]="!signUpForm.valid" (click)="signUp()" type="submit" class="btn btn-outline-primary btn-block">Continue</button>
+        <div class="alert alert-danger" role="alert" *ngIf="signUpError">
+          {{signUpError}}
+        </div>
+
+        <p style="margin-top: 50px">You have an account already?</p>
+        <button type="button" class="btn btn-outline-success btn-block" routerLink="/signin">Sign In</button>
+      </form>
+    </div>
+  </div>
+</div>

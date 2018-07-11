@@ -40,6 +40,8 @@ namespace RecipeBook.API
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
+            services.AddCors();
+
             services.Configure<DocumentDbOptions>(Configuration.GetSection("DocumentDbOptions"));
             services.Configure<SignCredentials>(Configuration.GetSection("SignCredentials"));
 
@@ -84,8 +86,6 @@ namespace RecipeBook.API
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseGlobalExceptionHandler();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -95,6 +95,14 @@ namespace RecipeBook.API
                 app.UseHsts();
             }
 
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+                builder.AllowCredentials();
+            });
+            app.UseGlobalExceptionHandler();
             app.UseAuthentication();
             app.UseMiddleware<CurrentUserMiddleware>();
             app.UseHttpsRedirection();            

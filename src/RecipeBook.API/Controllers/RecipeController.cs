@@ -21,6 +21,7 @@ namespace RecipeBook.API.Controllers
         }
 
         // GET: api/Recipe
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IEnumerable<RecipeEntry>> Get()
         {
@@ -28,6 +29,7 @@ namespace RecipeBook.API.Controllers
         }
 
         // GET: api/Recipe/5
+        [AllowAnonymous]
         [HttpGet("{id}", Name = "Get")]
         public async Task<RecipeEntry> Get(string id)
         {

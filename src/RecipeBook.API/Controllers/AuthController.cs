@@ -31,7 +31,7 @@ namespace RecipeBook.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("authorize")]
-        public async Task<IActionResult> Authorize([FromForm]SessionSignIn signIn)
+        public async Task<IActionResult> Authorize([FromBody]SessionSignIn signIn)
         {
             await Task.CompletedTask;
 
@@ -65,7 +65,7 @@ namespace RecipeBook.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("signup")]
-        public async Task<IActionResult> SignUp([FromForm]SessionSignUp signUp)
+        public async Task<IActionResult> SignUp([FromBody]SessionSignUp signUp)
         {
             if (!ModelState.IsValid)
             {
