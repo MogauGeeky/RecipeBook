@@ -5,18 +5,21 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { SignInComponent } from './components/sign-in/sign-in.component';
 import { AuthGuard, AuthService } from './auth';
-import { RecipeListComponent } from './components/recipe-list/recipe-list.component';
-import { MyRecipeListComponent } from './components/my-recipe-list/my-recipe-list.component';
-import { ViewRecipeComponent } from './components/view-recipe/view-recipe.component';
-import { AddRecipeComponent } from './components/add-recipe/add-recipe.component';
-import { EditRecipeComponent } from './components/edit-recipe/edit-recipe.component';
-import { HomeComponent } from './components/home/home.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from '../environments/environment';
 import { CommonModule } from '../../node_modules/@angular/common';
+import { RecipesListComponent } from './components/recipes/recipes-list/recipes-list.component';
+import { RecipesComponent } from './pages/recipes/recipes.component';
+import { MyRecipesComponent } from './pages/my-recipes/my-recipes.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { ContentComponent } from './components/content/content.component';
+import { ViewRecipeComponent } from './components/recipes/view-recipe/view-recipe.component';
+import { AddRecipeComponent } from './components/recipes/add-recipe/add-recipe.component';
+import { EditRecipeComponent } from './components/recipes/edit-recipe/edit-recipe.component';
+import { SignInComponent } from './pages/sign-in/sign-in.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
+
 export function tokenGetter() {
   console.log(localStorage.getItem('access_token'));
   return localStorage.getItem('access_token');
@@ -25,14 +28,16 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    SignUpComponent,
-    SignInComponent,
-    RecipeListComponent,
+    RecipesListComponent,
+    RecipesComponent,
+    MyRecipesComponent,
+    NavigationComponent,
+    ContentComponent,
     ViewRecipeComponent,
-    MyRecipeListComponent,
     AddRecipeComponent,
-    EditRecipeComponent
+    EditRecipeComponent,
+    SignInComponent,
+    SignUpComponent
   ],
   imports: [
     CommonModule,
@@ -51,20 +56,24 @@ export function tokenGetter() {
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: 'recipes', pathMatch: 'full' },
+      {
+        path: '', redirectTo: 'recipes', pathMatch: 'full'
+      },
       {
         path: 'recipes',
-        component: HomeComponent,
+        component: ContentComponent,
         children: [
-          { path: '', component: RecipeListComponent },
+          { path: '', component: RecipesComponent },
           { path: 'details/:id', component: ViewRecipeComponent },
-          { path: 'addnew', component: AddRecipeComponent, canActivate: [AuthGuard] },
-          { path: '**', redirectTo: '' }
+          { path: 'my-recipes', component: MyRecipesComponent, canActivate: [AuthGuard] },
+          { path: 'my-recipes/details/:id', component: ViewRecipeComponent, canActivate: [AuthGuard] },
+          { path: 'my-recipes/update/:id', component: EditRecipeComponent, canActivate: [AuthGuard] },
+          { path: 'my-recipes/addnew', component: AddRecipeComponent, canActivate: [AuthGuard] },
         ]
       },
       { path: 'signin', component: SignInComponent },
       { path: 'signup', component: SignUpComponent },
-      { path: '**', redirectTo: '' }
+      { path: '**', redirectTo: 'recipes' }
     ])
   ],
   providers: [AuthGuard, AuthService],

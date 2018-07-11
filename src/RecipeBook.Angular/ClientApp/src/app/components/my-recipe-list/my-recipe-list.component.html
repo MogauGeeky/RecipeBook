@@ -1,5 +1,0 @@
-<h1>My Recipes</h1>
-<hr>
-<ul class="list-group">
-  <li *ngFor="let recipe of recipeList | async" [routerLink]="'recipes/' + recipe.id">{{recipe.name}}</li>
-</ul>
