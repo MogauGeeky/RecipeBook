@@ -1,3 +1,10 @@
-<p>
-  my-recipes works!
-</p>
+<div class="row justify-content-start">
+    <div class="col-1">
+        <a class="btn btn-primary" routerLink="addnew" role="button">Add New</a>
+    </div>
+  <div class="col-2">
+      <p class="lead">My Recipes</p>
+  </div>
+</div>
+<hr class="my-2">
+<app-recipes-list [items]="recipeList | async" (itemClicked)="onRecipeClicked($event)"></app-recipes-list>

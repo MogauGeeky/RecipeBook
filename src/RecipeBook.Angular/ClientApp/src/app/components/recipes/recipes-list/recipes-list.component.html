@@ -1,6 +1,6 @@
 <div class="row">
-  <ng-container *ngIf="items; else empty">
-    <div *ngFor="let recipe of items" class="col-sm-2">
+  <ng-container *ngIf="(items && items?.length) > 0; else empty">
+    <div (click)="onItemClick(recipe)" *ngFor="let recipe of items" class="col-sm-4 mb-2">
       <div class="card">
         <div class="card-body">
           <h3 class="card-title">{{recipe.title}}</h3>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '../../../../node_modules/@angular/forms';
 import { Router } from '../../../../node_modules/@angular/router';
 import { AuthService } from '../../auth';
+import { AlertService } from '../../../../node_modules/ngx-alerts';
 
 @Component({
   selector: 'app-sign-in',
@@ -11,7 +12,7 @@ export class SignInComponent implements OnInit {
   signInForm: FormGroup;
   signInError: string;
 
-  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder) { }
+  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder, private alertService: AlertService) { }
 
   ngOnInit() {
     if (this.authService.isAuthorised()) {
@@ -27,9 +28,10 @@ export class SignInComponent implements OnInit {
   signIn() {
     this.signInError = null;
     this.authService.authenticate(this.signInForm.value).then(() => {
+      this.alertService.success('login successful');
       this.router.navigate(['/']);
-    }, (error: Error) => {
-      this.signInError = error.message;
+    }, (error: any) => {
+      this.signInError = error.error;
     });
   }
 

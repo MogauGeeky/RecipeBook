@@ -1,3 +1,40 @@
-<p>
-  view-recipe works!
-</p>
+<div class="row">
+  <div class="col-6">
+    <p class="lead">{{recipe?.title}}</p>
+    <hr class="my-2">
+    <form>
+      <div class="form-group">
+        <label for="Title"></label>
+        <input type="text" name="title" disabled="disabled" value="{{recipe?.title}}" id="title" class="form-control" placeholder="Title"
+          aria-describedby="helpId">
+      </div>
+      <div class="form-group">
+        <label for="Description"></label>
+        <input type="text" name="description" disabled="disabled" value="{{recipe?.description}}" id="description" class="form-control"
+          placeholder="Description" aria-describedby="helpId">
+      </div>
+      <div class="form-group">
+        <label for="Notes"></label>
+        <textarea name="notes" id="notes" disabled="disabled" value="{{recipe?.notes}}" class="form-control" placeholder="Notes" aria-describedby="helpId"></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="col-6">
+    <p class="lead">Instructions</p>
+    <hr class="my-2">
+    <p class="lead">Steps</p>
+    <hr class="my-2">
+    <div class="list-group">
+      <ng-container *ngIf="(recipe?.recipeEntrySteps && recipe?.recipeEntrySteps.length > 0); else emptySteps">
+        <div *ngFor="let step of recipe?.recipeEntrySteps; let index = index" class="list-group-item">
+          <small>Step {{index + 1}}</small>
+          <p class="mb-1">{{step.notes}}</p>
+        </div>
+      </ng-container>
+
+      <ng-template #emptySteps>
+        No steps added
+      </ng-template>
+    </div>
+  </div>
+</div>

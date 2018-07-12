@@ -1,3 +1,49 @@
-<p>
-  add-recipe works!
-</p>
+<div class="row">
+  <div class="col-6">
+    <p class="lead">Add Recipe</p>
+    <hr class="my-2">
+    <form [formGroup]="addRecipeForm">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" [class]="(addRecipeForm.get('title').dirty && addRecipeForm.get('title').errors) ? 'form-control is-invalid': 'form-control'"
+          placeholder="Title" aria-describedby="helpId" formControlName="title">
+        <div class="invalid-feedback">
+          <ng-container *ngIf="addRecipeForm.get('title').hasError('required')">
+            Title is required
+          </ng-container>
+          <ng-container *ngIf="addRecipeForm.get('title').hasError('minlength')">
+            Title has a maximum of 100 characters
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description" [class]="(addRecipeForm.get('description').dirty && addRecipeForm.get('description').errors) ? 'form-control is-invalid': 'form-control'"
+          placeholder="Description" aria-describedby="helpId" formControlName="description">
+        <div class="invalid-feedback">
+          <ng-container *ngIf="addRecipeForm.get('description').hasError('required')">
+            Description is required
+          </ng-container>
+          <ng-container *ngIf="addRecipeForm.get('description').hasError('maxlength')">
+            Description has a maximum of 100 characters
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea name="notes" id="notes" [class]="(addRecipeForm.get('notes').dirty && addRecipeForm.get('notes').errors) ? 'form-control is-invalid': 'form-control'"
+          placeholder="Notes" aria-describedby="helpId" formControlName="notes"></textarea>
+        <div class="invalid-feedback">
+          <ng-container *ngIf="addRecipeForm.get('notes').hasError('maxlength')">
+            Notes has a maximum of 500 characters
+          </ng-container>
+        </div>
+      </div>
+
+      <button [disabled]="!addRecipeForm.valid" (click)="addRecipe()" type="submit" class="btn btn-outline-primary btn-block">Add</button>
+      <div class="alert alert-danger" role="alert" *ngIf="addRecipeFormError">
+        {{addRecipeFormError}}
+      </div>
+    </form>
+  </div>
+</div>

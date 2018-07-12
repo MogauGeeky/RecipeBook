@@ -15,9 +15,9 @@ namespace RecipeBook.Manager.Requests
     {
         public AddRecipeValidator()
         {
-            RuleFor(c => c.Title).MaximumLength(200).NotNull().NotEmpty();
+            RuleFor(c => c.Title).MaximumLength(100).NotNull().NotEmpty();
+            RuleFor(c => c.Description).MaximumLength(100);
             RuleFor(c => c.Description).MaximumLength(500);
-            RuleFor(c => c.Description).MaximumLength(1000);
         }
     }
 }

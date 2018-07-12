@@ -27,7 +27,7 @@ namespace RecipeBook.API.Extensions
                 x.ForException<RestrictedUpdateException>().ReturnStatusCode(StatusCodes.Status403Forbidden)
                     .UsingMessageFormatter((ex, context) => JsonConvert.SerializeObject(new
                     {
-                        ex.Message
+                        error = ex.Message
                     }));
             });
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { RecipeEntry } from "../../../models";
 
 @Component({
@@ -7,4 +7,9 @@ import { RecipeEntry } from "../../../models";
 })
 export class RecipesListComponent {
   @Input() items: RecipeEntry[] = [];
+  @Output() itemClicked: EventEmitter<String> = new EventEmitter<String>();
+
+  onItemClick(item: RecipeEntry) {
+    this.itemClicked.emit(item.id);
+  }
 }

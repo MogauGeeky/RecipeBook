@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using RecipeBook.Data.Manager;
 using RecipeBook.Manager.Exceptions;
+using RecipeBook.Manager.Extension;
 using RecipeBook.Manager.Requests;
 using RecipeBook.Models;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace RecipeBook.Manager
         IRequestHandler<GetRecipes, IEnumerable<RecipeEntry>>,
         IRequestHandler<GetRecipe, RecipeEntry>,
         IRequestHandler<AddRecipeStep, RecipeEntryStep>,
+        IRequestHandler<GetRecipeStep, RecipeEntryStep>,
         IRequestHandler<UpdateRecipeStep, RecipeEntryStep>,
         IRequestHandler<DeleteRecipeStep>
     {
@@ -54,17 +56,19 @@ namespace RecipeBook.Manager
         public async Task<RecipeEntry> Handle(UpdateRecipe request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Updating recipe", request);
-            var recipeEntry = _mapper.Map<RecipeEntry>(request);
 
-            if (!(await _recipeBookDataManager.Recipes.GetItemsAsync(c => c.Id == request.Id)).Any())
+            var recipe = await _recipeBookDataManager.Recipes.GetItemAsync(request.Id);
+            if(recipe == null)
                 throw new MissingRecordException($"Recipe with id: {request.Id} not found");
 
-            if (recipeEntry.OwnerId != _currentUser.UserId)
+            if (recipe.OwnerId != _currentUser.UserId)
                 throw new RestrictedUpdateException("Cannot update recipe you don't own");
 
-            await _recipeBookDataManager.Recipes.UpdateItemAsync(recipeEntry.Id, recipeEntry);
+            recipe = _mapper.MergeInto<RecipeEntry>(recipe, request);
 
-            return recipeEntry;
+            await _recipeBookDataManager.Recipes.UpdateItemAsync(recipe.Id, recipe);
+
+            return recipe;
         }
 
         public async Task<IEnumerable<RecipeEntry>> Handle(GetRecipes request, CancellationToken cancellationToken)
@@ -134,6 +138,10 @@ namespace RecipeBook.Manager
             var update = _mapper.Map<RecipeEntryStep>(request);
 
             var record = recipe.RecipeEntrySteps.FindIndex(c => c.Id == request.Id);
+
+            if(record == -1)
+                throw new MissingRecordException($"Recipe Step with id: {request.Id} not found");
+
             recipe.RecipeEntrySteps[record] = update;
 
             await _recipeBookDataManager.Recipes.UpdateItemAsync(recipe.Id, recipe);
@@ -157,6 +165,24 @@ namespace RecipeBook.Manager
             await _recipeBookDataManager.Recipes.UpdateItemAsync(recipe.Id, recipe);
 
             return new Unit();
+        }
+
+        public async Task<RecipeEntryStep> Handle(GetRecipeStep request, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Getting recipe step", request);
+
+            var recipe = await _recipeBookDataManager.Recipes.GetItemAsync(request.RecipeId);
+            if (recipe == null)
+                throw new MissingRecordException($"Recipe with id: {request.RecipeId} not found");
+
+            if(recipe.RecipeEntrySteps == null)
+                throw new MissingRecordException($"Recipe Step with id: {request.RecipeStepId} not found");
+
+            var recipeStep = recipe.RecipeEntrySteps.FirstOrDefault(c => c.Id == request.RecipeStepId.Trim());
+            if(recipeStep == null)
+                throw new MissingRecordException($"Recipe Step with id: {request.RecipeStepId} not found");
+
+            return recipeStep;
         }
     }
 }

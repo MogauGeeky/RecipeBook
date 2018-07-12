@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors }
 import { Router } from '../../../../node_modules/@angular/router';
 import { AuthService } from '../../auth';
 import { Observable, Observer } from '../../../../node_modules/rxjs';
+import { AlertService } from '../../../../node_modules/ngx-alerts';
 
 @Component({
   selector: 'app-sign-up',
@@ -13,7 +14,7 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   signUpError: string;
 
-  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder) { }
+  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder, private alertService: AlertService) { }
 
   ngOnInit() {
     if (this.authService.isAuthorised()) {
@@ -40,6 +41,7 @@ export class SignUpComponent implements OnInit {
   signUp() {
     this.signUpError = null;
     this.authService.signUp(this.signUpForm.value).then(() => {
+      this.alertService.success('sign up successful');
       this.router.navigate(['/']);
     }, (error: Error) => {
       console.log(error);

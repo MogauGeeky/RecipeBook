@@ -5,6 +5,6 @@ export class RecipeEntry {
     public title: string;
     public description: string;
     public notes: string;
-    public ownerid: string;
+    public ownerId: string;
     public recipeEntrySteps: RecipeStep[];
 }

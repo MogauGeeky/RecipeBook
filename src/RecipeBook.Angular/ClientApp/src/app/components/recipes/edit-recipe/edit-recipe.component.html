@@ -1,3 +1,74 @@
-<p>
-  edit-recipe works!
-</p>
+<div class="row">
+  <div class="col-6">
+    <p class="lead">
+      <strong>Update:</strong> {{recipe?.title}}</p>
+    <hr class="my-2">
+    <form [formGroup]="editRecipeEntryForm">
+      <input type="text" hidden="hidden" formControlName="id" />
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" [class]="(editRecipeEntryForm.get('title').dirty && editRecipeEntryForm.get('title').errors) ? 'form-control is-invalid': 'form-control'"
+          placeholder="Title" aria-describedby="helpId" formControlName="title">
+        <div class="invalid-feedback">
+          <ng-container *ngIf="editRecipeEntryForm.get('title').hasError('required')">
+            Title is required
+          </ng-container>
+          <ng-container *ngIf="editRecipeEntryForm.get('title').hasError('minlength')">
+            Title has a maximum of 100 characters
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description" [class]="(editRecipeEntryForm.get('description').dirty && editRecipeEntryForm.get('description').errors) ? 'form-control is-invalid': 'form-control'"
+          placeholder="Description" aria-describedby="helpId" formControlName="description">
+        <div class="invalid-feedback">
+          <ng-container *ngIf="editRecipeEntryForm.get('description').hasError('required')">
+            Description is required
+          </ng-container>
+          <ng-container *ngIf="editRecipeEntryForm.get('description').hasError('maxlength')">
+            Description has a maximum of 100 characters
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea name="notes" id="notes" [class]="(editRecipeEntryForm.get('notes').dirty && editRecipeEntryForm.get('notes').errors) ? 'form-control is-invalid': 'form-control'"
+          placeholder="Notes" aria-describedby="helpId" formControlName="notes"></textarea>
+        <div class="invalid-feedback">
+          <ng-container *ngIf="editRecipeEntryForm.get('notes').hasError('maxlength')">
+            Notes has a maximum of 500 characters
+          </ng-container>
+        </div>
+      </div>
+
+      <button [disabled]="!editRecipeEntryForm.valid" (click)="updateRecipeEntry()" type="submit" class="btn btn-outline-primary btn-block">Update</button>
+      <div class="alert alert-danger" role="alert" *ngIf="editRecipeEntryFormError">
+        {{editRecipeEntryFormError}}
+      </div>
+      <button (click)="updateRecipeEntry()" type="submit" class="btn btn-outline-danger btn-block">Delete Recipe</button>
+    </form>
+  </div>
+  <div class="col-6">
+    <p class="lead">Instructions</p>
+    <hr class="my-2">
+    <p class="lead">Steps</p><a [routerLink]="'steps/add'" class="btn btn-primary" role="button">Add Step</a>
+    <hr class="my-2">
+    <div class="list-group">
+      <ng-container *ngIf="(recipe?.recipeEntrySteps && recipe?.recipeEntrySteps.length > 0); else emptySteps">
+        <div *ngFor="let step of recipe?.recipeEntrySteps; let index = index" class="list-group-item">
+          <small>Step {{index + 1}}</small>
+          <p class="mb-1">{{step.notes}}</p>
+          <div class="d-flex w-100 justify-content-end">
+            <label [routerLink]="'steps/ ' + step.id" class="badge badge-primary" style="padding: 5px; margin-right: 5px">update step</label>
+            <label (click)="deleteStep(step.id)" class="badge badge-danger"  style="padding: 5px;">remove step</label>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #emptySteps>
+        No steps added
+      </ng-template>
+    </div>
+  </div>
+</div>

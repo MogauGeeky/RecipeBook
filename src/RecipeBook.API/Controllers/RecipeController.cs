@@ -65,11 +65,17 @@ namespace RecipeBook.API.Controllers
             return await _mediator.Send(value);
         }
 
+        [HttpGet("{id}/steps/{stepId}")]
+        public async Task<RecipeEntryStep> GetStep(string id, string stepId)
+        {
+            return await _mediator.Send(new GetRecipeStep(id, stepId.Trim()));
+        }
+
         [HttpPut("{id}/steps/{stepId}")]
         public async Task<RecipeEntryStep> UpdateStep(string id, string stepId, [FromBody]UpdateRecipeStep value)
         {
-            value.Id = stepId;
-            value.RecipeId = id;
+            value.Id = stepId.Trim();
+            value.RecipeId = id.Trim();
 
             return await _mediator.Send(value);
         }
@@ -77,7 +83,7 @@ namespace RecipeBook.API.Controllers
         [HttpDelete("{id}/steps/{stepId}")]
         public async Task DeleteStep(string id, string stepId)
         {
-            await _mediator.Send(new DeleteRecipeStep(stepId, id));
+            await _mediator.Send(new DeleteRecipeStep(stepId.Trim(), id.Trim()));
         }
     }
 }

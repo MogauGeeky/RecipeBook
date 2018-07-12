@@ -1,1 +1,3 @@
-<app-recipes-list [items]="recipeList | async"></app-recipes-list>
+<p class="lead">All Recipes</p>
+<hr class="my-2">
+<app-recipes-list [items]="recipeList | async" (itemClicked)="onRecipeClicked($event)"></app-recipes-list>
