@@ -20,6 +20,8 @@ import { EditRecipeComponent } from './components/recipes/edit-recipe/edit-recip
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { UpdateRecipeStepComponent } from './components/recipes/update-recipe-step/update-recipe-step.component';
+import { AlertModule } from 'ngx-alerts';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -42,6 +44,7 @@ export function tokenGetter() {
   ],
   imports: [
     CommonModule,
+    BrowserAnimationsModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
@@ -65,7 +68,8 @@ export function tokenGetter() {
       { path: 'signin', component: SignInComponent },
       { path: 'signup', component: SignUpComponent },
       { path: '**', redirectTo: 'recipes' }
-    ])
+    ]),
+    AlertModule.forRoot({maxMessages: 5, timeout: 5000})
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true },

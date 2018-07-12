@@ -77,7 +77,7 @@ export class EditRecipeComponent implements OnInit {
     )
     .subscribe(() => {
       this.alertService.success('Step Deleted');
-      this.recipe.recipeEntrySteps = this.recipe.recipeEntrySteps.filter(c => c.id === id);
+      this.recipe.recipeEntrySteps = this.recipe.recipeEntrySteps.filter(c => c.id !== id);
     },
       error => {
         this.alertService.danger('Error');
@@ -90,7 +90,7 @@ export class EditRecipeComponent implements OnInit {
     this.http.delete( `${environment.apiLocation}/api/recipes/${this.recipeId}`)
     .subscribe(() => {
       this.alertService.success('Recipe Deleted');
-      this.router.navigate(['../'], { relativeTo: this.route });
+      this.router.navigate(['../../'], { relativeTo: this.route });
     }, (error) => {
       this.alertService.danger('Error');
     });
